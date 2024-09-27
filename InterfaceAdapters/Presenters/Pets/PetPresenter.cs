@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InterfaceAdapters.Presenters
+namespace InterfaceAdapters.Presenters.Pets
 {
     public class PetPresenter : IPresenter<Pet, PetViewModel>
     {

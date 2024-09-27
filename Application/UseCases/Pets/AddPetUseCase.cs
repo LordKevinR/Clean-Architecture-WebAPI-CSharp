@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Exceptions;
+using Application.Interfaces;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Application.UseCases.Pets
             var pet = mapper.ToEntity(petDTO);
 
             if (string.IsNullOrEmpty(pet.Name))
-                throw new Exception("The pet's name is required");
+                throw new BadRequestValidationException("The pet's name is required");
 
             await repository.AddAsync(pet);
         }
