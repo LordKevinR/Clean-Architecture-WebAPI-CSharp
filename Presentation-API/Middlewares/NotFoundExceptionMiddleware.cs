@@ -4,11 +4,11 @@ using System.Text.Json;
 
 namespace Presentation_API.Middlewares
 {
-    public class ExceptionMiddleware
+    public class NotFoundExceptionMiddleware
     {
         private readonly RequestDelegate next;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public NotFoundExceptionMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
@@ -19,18 +19,18 @@ namespace Presentation_API.Middlewares
             {
                 await next(context);
             }
-            catch (BadRequestValidationException ex)
+            catch (NotFoundValidationException ex)
             {
                 await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, BadRequestValidationException exception)
+        private static async Task HandleExceptionAsync(HttpContext context, NotFoundValidationException exception)
         {
             var response = context.Response;
             response.ContentType = "application/json";
 
-            var statusCode = HttpStatusCode.BadRequest;
+            var statusCode = HttpStatusCode.NotFound;
             var result = JsonSerializer.Serialize(new
             {
                 error = exception.Message,

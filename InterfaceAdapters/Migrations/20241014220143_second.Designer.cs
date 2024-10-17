@@ -3,6 +3,7 @@ using System;
 using InterfaceAdapters.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InterfaceAdapters.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241014220143_second")]
+    partial class second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -48,18 +51,10 @@ namespace InterfaceAdapters.Migrations
                     b.Property<int>("PetId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("SaleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PetId");
 
                     b.HasIndex("SaleId");
 
@@ -85,19 +80,11 @@ namespace InterfaceAdapters.Migrations
 
             modelBuilder.Entity("InterfaceAdapters.Models.Sales.ConceptModel", b =>
                 {
-                    b.HasOne("InterfaceAdapters.Models.Pets.PetModel", "Pet")
-                        .WithMany()
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InterfaceAdapters.Models.Sales.SaleModel", null)
                         .WithMany("Concepts")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Pet");
                 });
 
             modelBuilder.Entity("InterfaceAdapters.Models.Sales.SaleModel", b =>

@@ -1,9 +1,9 @@
 ﻿
 using Application.Interfaces;
 using Domain.Entities;
-using InterfaceAdapters.DTOs;
+using InterfaceAdapters.DTOs.Pets;
 
-namespace InterfaceAdapters.Mappers
+namespace InterfaceAdapters.Mappers.Pets
 {
     public class PetMapper : IMapper<PetCreationRequestDTO, Pet>
     {

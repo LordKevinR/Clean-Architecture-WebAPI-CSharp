@@ -1,7 +1,6 @@
-﻿
-namespace InterfaceAdapters.DTOs
+﻿namespace InterfaceAdapters.DTOs.Pets
 {
-    public class PetCreationRequestDTO
+    public class PetUpdateRequestDTO
     {
         public string Name { get; set; }
         public string Owner { get; set; }

@@ -3,9 +3,9 @@ using InterfaceAdapters.DTOs.Pets;
 
 namespace Presentation_API.Validators
 {
-    public class PetValidator : AbstractValidator<PetCreationRequestDTO>
+    public class PetUpdateValidator : AbstractValidator<PetUpdateRequestDTO>
     {
-        public PetValidator()
+        public PetUpdateValidator()
         {
             RuleFor(dto => dto.Name).NotEmpty().WithMessage("The pet's name is required");
             RuleFor(dto => dto.Age).NotEmpty().WithMessage("The pet's age is required");

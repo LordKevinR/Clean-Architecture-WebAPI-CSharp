@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InterfaceAdapters.Models
+namespace InterfaceAdapters.Models.Pets
 {
     public class PetModel
     {

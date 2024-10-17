@@ -1,16 +1,11 @@
-﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IRepository<T>
     {
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
         Task AddAsync(T generic);
+        Task DeleteAsync(int id);
+        Task UpdateAsync(int id, T generic);
     }
 }
