@@ -13,6 +13,7 @@ using InterfaceAdapters.DTOs.Users;
 using InterfaceAdapters.ExternalServices;
 using InterfaceAdapters.Mappers.Pets;
 using InterfaceAdapters.Mappers.Sales;
+using InterfaceAdapters.Models.Sales;
 using InterfaceAdapters.Presenters.PetDetail;
 using InterfaceAdapters.Presenters.Pets;
 using InterfaceAdapters.Repository.Pets;
@@ -45,7 +46,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 
-//interfaces
+
+#region Interfaces
+
+//Pets
 builder.Services.AddScoped<IRepository<Pet>, PetRepository>();
 builder.Services.AddScoped<IPresenter<Pet, PetViewModel>, PetPresenter>();
 builder.Services.AddScoped<IPresenter<Pet, PetDetailViewModel>, PetDetailPresenter>();
@@ -53,13 +57,21 @@ builder.Services.AddScoped<ISinglePresenter<Pet, PetViewModel>, PetSinglePresent
 builder.Services.AddScoped<ISinglePresenter<Pet, PetDetailViewModel>, PetDetailSinglePresenter>();
 builder.Services.AddScoped<IMapper<PetCreationRequestDTO, Pet>, PetMapper>();
 builder.Services.AddScoped<IMapper<PetUpdateRequestDTO, Pet>, PetEditMapper>();
+
+//Users
 builder.Services.AddScoped<IExternalService<UserServiceDTO>, UserService>();
 builder.Services.AddScoped<IExternalServiceAdapter<User>, UserExternalServiceAdapter>();
+
+//Sales
 builder.Services.AddScoped<IMapper<SaleRequestDTO, Sale>, SaleMapper>();
 builder.Services.AddScoped<IRepository<Sale>, SaleRepository>();
+builder.Services.AddScoped<IRepositorySearch<SaleModel, Sale>, SaleRepository>();
 
+#endregion
 
-//use cases 
+#region Use cases 
+
+//Pets
 builder.Services.AddScoped<GetPetUseCase<Pet, PetViewModel>>();
 builder.Services.AddScoped<GetPetUseCase<Pet, PetDetailViewModel>>();
 builder.Services.AddScoped<GetSinglePetUseCase<Pet, PetViewModel>>();
@@ -67,10 +79,18 @@ builder.Services.AddScoped<GetSinglePetUseCase<Pet, PetDetailViewModel>>();
 builder.Services.AddScoped<AddPetUseCase<PetCreationRequestDTO>>();
 builder.Services.AddScoped<UpdatePetUseCase<PetUpdateRequestDTO>>();
 builder.Services.AddScoped<DeletePetUseCase>();
+
+//Users
 builder.Services.AddScoped<GetUsersUseCase>();
+
+//Sales
 builder.Services.AddScoped<GenerateSaleUseCase<SaleRequestDTO>>();
 builder.Services.AddScoped<GetSaleUseCase>();
+builder.Services.AddScoped<DeleteSaleUseCase>();
+builder.Services.AddScoped<GetSingleSaleUseCase>();
+builder.Services.AddScoped<GetSaleSearchUseCase<SaleModel>>();
 
+#endregion
 
 //httpClient service
 builder.Services.AddHttpClient<IExternalService<UserServiceDTO>, UserService>(x =>

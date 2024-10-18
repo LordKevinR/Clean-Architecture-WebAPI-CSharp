@@ -4,10 +4,11 @@ using Domain.Entities;
 using InterfaceAdapters.Data;
 using InterfaceAdapters.Models.Sales;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace InterfaceAdapters.Repository.Sales
 {
-    public class SaleRepository : IRepository<Sale>
+    public class SaleRepository : IRepository<Sale>, IRepositorySearch<SaleModel, Sale>
     {
         private readonly ApplicationDbContext context;
 
@@ -61,7 +62,14 @@ namespace InterfaceAdapters.Repository.Sales
 
         public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+
+            var saleModel = await context.Sales.FindAsync(id);
+
+            if (saleModel is null)
+                throw new NotFoundValidationException($"Sale with id {id}, doesn't exists");
+
+            await context.Sales.Where(s => s.Id == id).ExecuteDeleteAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Sale>> GetAllAsync()
@@ -81,6 +89,9 @@ namespace InterfaceAdapters.Repository.Sales
         {
             var saleModel = await context.Sales.FindAsync(id);
 
+            if (saleModel is null)
+                throw new NotFoundValidationException($"Sale with id {id}, doesn't exists");
+
             return new Sale(
                 saleModel.Id,
                 saleModel.CreationDate,
@@ -93,7 +104,31 @@ namespace InterfaceAdapters.Repository.Sales
 
         public async Task UpdateAsync(int id, Sale sale)
         {
+            // A sale can't be updated
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Sale>> GetAsync(Expression<Func<SaleModel, bool>> predicate)
+        {
+            var salesModel = await context.Sales.Include("Concepts").Where(predicate).ToListAsync();
+
+            var sales = new List<Sale>(); 
+
+            foreach (var saleModel in salesModel)
+            {
+                var concepts = new List<Concept>();
+                foreach (var conceptModel in saleModel.Concepts)
+                {
+                    var concept = new Concept(conceptModel.Quantity, conceptModel.PetId, conceptModel.UnitPrice);
+                    concepts.Add(concept);
+                }
+
+                var sale = new Sale(saleModel.Id, saleModel.CreationDate, concepts);
+                sales.Add(sale);
+            }
+
+            return sales;
+        }
+
     }
 }
